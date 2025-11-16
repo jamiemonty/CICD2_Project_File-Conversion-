@@ -13,7 +13,7 @@ async def convert_endpoint(
     # endpoint to handle file conversion requests
     # Conversion logic placeholder
 
-    # Call placeholder conversion function
+    # Call conversion function
     output_path = await convert_file(file, target_format)
 
     return JSONResponse(
