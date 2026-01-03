@@ -39,8 +39,9 @@ def convert_from_txt(txt_path: str, target_format: str, output_path: str):
     Converts plain text (.txt) into the requested output format.
     """
     output_format_map = {
-        "txt": "plain",
-        "docx": "docx"
+        "txt": "markdown",
+        "docx": "docx",
+        "pdf": "pdf"
     }
 
     output_format = output_format_map.get(target_format)
@@ -50,7 +51,7 @@ def convert_from_txt(txt_path: str, target_format: str, output_path: str):
     pypandoc.convert_file(
         txt_path,
         to=output_format,
-        format="plain",
+        format="markdown",
         outputfile=output_path
     )
 
@@ -125,22 +126,5 @@ async def convert_file(file, target_format: str, run_profanity: bool, run_spellc
     except Exception as e:
         print("CONVERSION ERROR:", repr(e))
         raise HTTPException(500, f"Conversion failed: {str(e)}")
-
-    return output_path
-
-    input_format = format_map.get(ext.lower(), "markdown")  # default to markdown
-
-    pandoc_format = output_format_map.get(target_format.lower(), target_format.lower())
-
-    try:
-        pypandoc.convert_file(input_path, to=pandoc_format, format=input_format, outputfile=output_path)
-        print(f"file Conversion Successful... {output_path}")
-
-    #except Exception as e:
-    #    raise HTTPException(status_code=500, detail=f"Conversion failed:") from e
-
-    except Exception as e:
-        print("CONVERSION ERROR:", repr(e))
-        raise HTTPException(status_code=500, detail=f"Conversion failed: {str(e)}")
 
     return output_path
