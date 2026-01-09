@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  file-conversion:
+    image: ghcr.io/jamiemonty/cicd2_project_file-conversion/file-conversion-service:latest
+    container_name: file-conversion
+    ports:
+      - "8000:8000"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:8000
+    depends_on:
+      - auth-service
+
+  auth-service:
+    image: ghcr.io/jamiemonty/cicd2_project_authentication-validation/auth-service:latest
+    container_name: auth-service
+    ports:
+      - "8001:8000"
