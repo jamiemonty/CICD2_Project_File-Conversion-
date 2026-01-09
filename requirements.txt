@@ -37,3 +37,6 @@ pypandoc
 pillow
 aiofiles
 pytest-asyncio==0.24.0
+reportlab
+pdfminer.six
+python-docx
