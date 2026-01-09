@@ -3,6 +3,7 @@ import pypandoc
 import uuid
 from fastapi import HTTPException
 from app.services.filters import apply_filters
+from app.services.pdf_utils import txt_to_pdf
 
 # Automatically download Pandoc if not found
 
@@ -38,10 +39,18 @@ def convert_from_txt(txt_path: str, target_format: str, output_path: str):
     """
     Converts plain text (.txt) into the requested output format.
     """
+    
+    target_format = target_format.lower()
+
+    # PDF via reportlab
+    if target_format == "pdf":
+        txt_to_pdf(txt_path, output_path)
+        return
+
+    # Existing pandoc outputs
     output_format_map = {
-        "txt": "markdown",
+        "txt": "plain",
         "docx": "docx",
-        "pdf": "pdf"
     }
 
     output_format = output_format_map.get(target_format)
@@ -51,9 +60,11 @@ def convert_from_txt(txt_path: str, target_format: str, output_path: str):
     pypandoc.convert_file(
         txt_path,
         to=output_format,
-        format="markdown",
+        format="plain",
         outputfile=output_path
     )
+
+
 
 async def convert_file(file, target_format: str, run_profanity: bool, run_spellcheck: bool) -> str:
     
